@@ -9,8 +9,8 @@ import jjbridge.common.value.strategy.ValueSetter;
 import java.util.Date;
 
 public class JSDate<R extends JSReference> extends JSObject<R> {
-    private ValueGetter<Date> getter;
-    private ValueSetter<Date> setter;
+    private final ValueGetter<Date> getter;
+    private final ValueSetter<Date> setter;
 
     public JSDate(ValueGetter<Date> getter, ValueSetter<Date> setter, ObjectPropertyGetter<R> propertyGetter,
                   ObjectPropertySetter<R> propertySetter) {
@@ -30,7 +30,14 @@ public class JSDate<R extends JSReference> extends JSObject<R> {
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof JSDate)) return false;
+        @SuppressWarnings("rawtypes")
         JSDate other = (JSDate) obj;
         return super.equals(other) && this.getter.equals(other.getter) && this.setter.equals(other.setter);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return (super.hashCode() * 97 ^ getter.hashCode()) * 97 ^ setter.hashCode();
     }
 }

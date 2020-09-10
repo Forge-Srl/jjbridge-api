@@ -10,7 +10,7 @@ import java.util.Set;
 
 public abstract class JSBaseRuntime<R extends JSReference> implements JSRuntime {
     private boolean closed;
-    private Set<JSInspector> attachedInspectors;
+    private final Set<JSInspector> attachedInspectors;
     private long scriptCounter;
 
     protected JSBaseRuntime() {
@@ -30,6 +30,7 @@ public abstract class JSBaseRuntime<R extends JSReference> implements JSRuntime 
         this.closed = true;
     }
 
+    @SuppressWarnings("rawtypes")
     public final JSObject globalObject() {
         if (this.isClosed()) throw new RuntimeException();
         return this.getGlobalObject();

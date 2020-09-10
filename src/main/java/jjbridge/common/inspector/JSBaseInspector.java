@@ -7,6 +7,7 @@ import org.java_websocket.server.WebSocketServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -35,13 +36,17 @@ public abstract class JSBaseInspector<R extends JSRuntime> extends WebSocketServ
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        handler.close();
-        handler = null;
+        if (handler != null) {
+            handler.close();
+            handler = null;
+        }
     }
 
     @Override
     public void onMessage(WebSocket conn, String message) {
-        handler.sendToRuntime(message);
+        if (handler != null) {
+            handler.sendToRuntime(message);
+        }
     }
 
     @Override
@@ -93,5 +98,17 @@ public abstract class JSBaseInspector<R extends JSRuntime> extends WebSocketServ
     public int hashCode() {
         R runtime = getRuntime();
         return (109 * getPort()) ^ (runtime == null ? 0 : runtime.hashCode());
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof JSBaseInspector))
+            return false;
+
+        @SuppressWarnings("unchecked")
+        JSBaseInspector<R> that = (JSBaseInspector<R>) o;
+
+        return getPort() == that.getPort() && Objects.equals(runtime, that.runtime);
     }
 }

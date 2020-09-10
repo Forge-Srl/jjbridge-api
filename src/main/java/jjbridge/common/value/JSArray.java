@@ -7,8 +7,8 @@ import jjbridge.common.value.strategy.ObjectPropertyGetter;
 import jjbridge.common.value.strategy.ObjectPropertySetter;
 
 public class JSArray<R extends JSReference> extends JSObject<R> {
-    private ArrayDataGetter<R> arrayDataGetter;
-    private ArrayDataSetter<R> arrayDataSetter;
+    private final ArrayDataGetter<R> arrayDataGetter;
+    private final ArrayDataSetter<R> arrayDataSetter;
 
     public JSArray(ObjectPropertyGetter<R> propertyGetter, ObjectPropertySetter<R> propertySetter,
                    ArrayDataGetter<R> arrayDataGetter, ArrayDataSetter<R> arrayDataSetter) {
@@ -33,9 +33,16 @@ public class JSArray<R extends JSReference> extends JSObject<R> {
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof JSArray)) return false;
+        @SuppressWarnings("rawtypes")
         JSArray other = (JSArray) obj;
         return super.equals(other)
                 && this.arrayDataGetter.equals(other.arrayDataGetter)
                 && this.arrayDataSetter.equals(other.arrayDataSetter);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return (super.hashCode() * 97 ^ arrayDataGetter.hashCode()) * 97 ^ arrayDataSetter.hashCode();
     }
 }

@@ -25,7 +25,14 @@ public class JSObject<R extends JSReference> implements JSValue {
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof JSObject)) return false;
+        @SuppressWarnings("rawtypes")
         JSObject other = (JSObject) obj;
         return this.propertyGetter.equals(other.propertyGetter) && this.propertySetter.equals(other.propertySetter);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return propertyGetter.hashCode() * 97 ^ propertySetter.hashCode();
     }
 }
