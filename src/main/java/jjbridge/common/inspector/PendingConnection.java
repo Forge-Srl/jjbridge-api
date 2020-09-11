@@ -1,5 +1,6 @@
 package jjbridge.common.inspector;
 
-public interface PendingConnection {
+public interface PendingConnection
+{
     void waitForConnection(long maxWaitMillis);
 }

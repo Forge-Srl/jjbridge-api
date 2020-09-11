@@ -6,33 +6,42 @@ import jjbridge.common.value.strategy.ArrayDataSetter;
 import jjbridge.common.value.strategy.ObjectPropertyGetter;
 import jjbridge.common.value.strategy.ObjectPropertySetter;
 
-public class JSArray<R extends JSReference> extends JSObject<R> {
+public class JSArray<R extends JSReference> extends JSObject<R>
+{
     private final ArrayDataGetter<R> arrayDataGetter;
     private final ArrayDataSetter<R> arrayDataSetter;
 
     public JSArray(ObjectPropertyGetter<R> propertyGetter, ObjectPropertySetter<R> propertySetter,
-                   ArrayDataGetter<R> arrayDataGetter, ArrayDataSetter<R> arrayDataSetter) {
+                   ArrayDataGetter<R> arrayDataGetter, ArrayDataSetter<R> arrayDataSetter)
+    {
         super(propertyGetter, propertySetter);
         this.arrayDataGetter = arrayDataGetter;
         this.arrayDataSetter = arrayDataSetter;
     }
 
-    public int size() {
+    public int size()
+    {
         return this.arrayDataGetter.getSize();
     }
 
-    public JSReference get(int position) {
+    public JSReference get(int position)
+    {
         return this.arrayDataGetter.getItemByPosition(position);
     }
 
     @SuppressWarnings("unchecked")
-    public void set(int position, JSReference value) {
+    public void set(int position, JSReference value)
+    {
         this.arrayDataSetter.setItemByPosition(position, (R) value);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof JSArray)) return false;
+    public boolean equals(Object obj)
+    {
+        if (!(obj instanceof JSArray))
+        {
+            return false;
+        }
         @SuppressWarnings("rawtypes")
         JSArray other = (JSArray) obj;
         return super.equals(other)

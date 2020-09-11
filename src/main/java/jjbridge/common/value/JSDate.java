@@ -8,28 +8,36 @@ import jjbridge.common.value.strategy.ValueSetter;
 
 import java.util.Date;
 
-public class JSDate<R extends JSReference> extends JSObject<R> {
+public class JSDate<R extends JSReference> extends JSObject<R>
+{
     private final ValueGetter<Date> getter;
     private final ValueSetter<Date> setter;
 
     public JSDate(ValueGetter<Date> getter, ValueSetter<Date> setter, ObjectPropertyGetter<R> propertyGetter,
-                  ObjectPropertySetter<R> propertySetter) {
+                  ObjectPropertySetter<R> propertySetter)
+    {
         super(propertyGetter, propertySetter);
         this.getter = getter;
         this.setter = setter;
     }
 
-    public Date getValue() {
+    public Date getValue()
+    {
         return getter.getValue();
     }
 
-    public void setValue(Date value) {
+    public void setValue(Date value)
+    {
         setter.setValue(value);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof JSDate)) return false;
+    public boolean equals(Object obj)
+    {
+        if (!(obj instanceof JSDate))
+        {
+            return false;
+        }
         @SuppressWarnings("rawtypes")
         JSDate other = (JSDate) obj;
         return super.equals(other) && this.getter.equals(other.getter) && this.setter.equals(other.setter);

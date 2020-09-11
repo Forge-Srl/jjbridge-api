@@ -1,18 +1,24 @@
 package jjbridge.common.value;
 
 import jjbridge.common.runtime.JSReference;
-import jjbridge.common.value.strategy.*;
+import jjbridge.common.value.strategy.FunctionCallback;
+import jjbridge.common.value.strategy.FunctionInvoker;
+import jjbridge.common.value.strategy.FunctionSetter;
+import jjbridge.common.value.strategy.ObjectPropertyGetter;
+import jjbridge.common.value.strategy.ObjectPropertySetter;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
-public class JSFunction<R extends JSReference> extends JSObject<R> {
+public class JSFunction<R extends JSReference> extends JSObject<R>
+{
     private final Class<R> jsReferenceType;
     private final FunctionInvoker<R> functionInvoker;
     private final FunctionSetter<R> functionSetter;
 
     public JSFunction(Class<R> type, ObjectPropertyGetter<R> propertyGetter, ObjectPropertySetter<R> propertySetter,
-                      FunctionInvoker<R> functionInvoker, FunctionSetter<R> functionSetter) {
+                      FunctionInvoker<R> functionInvoker, FunctionSetter<R> functionSetter)
+    {
         super(propertyGetter, propertySetter);
         this.jsReferenceType = type;
         this.functionInvoker = functionInvoker;
@@ -20,29 +26,37 @@ public class JSFunction<R extends JSReference> extends JSObject<R> {
     }
 
     @SuppressWarnings("unchecked")
-    public JSReference invoke(JSReference receiver, JSReference... args) {
+    public JSReference invoke(JSReference receiver, JSReference... args)
+    {
         return this.functionInvoker.invokeFunction((R) receiver, castArray(args));
     }
 
-    public JSReference invokeConstructor(JSReference... args) {
+    public JSReference invokeConstructor(JSReference... args)
+    {
         return this.functionInvoker.invokeConstructor(castArray(args));
     }
 
     @SuppressWarnings("unchecked")
-    private R[] castArray(JSReference[] original) {
+    private R[] castArray(JSReference[] original)
+    {
         R[] casted = (R[]) Array.newInstance(jsReferenceType, original.length);
         casted = Arrays.asList(original).toArray(casted);
         return casted;
     }
 
     @SuppressWarnings("unchecked")
-    public void setFunction(@SuppressWarnings("rawtypes") FunctionCallback callback) {
+    public void setFunction(@SuppressWarnings("rawtypes") FunctionCallback callback)
+    {
         this.functionSetter.setFunction((FunctionCallback<R>) callback);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof JSFunction)) return false;
+    public boolean equals(Object obj)
+    {
+        if (!(obj instanceof JSFunction))
+        {
+            return false;
+        }
         @SuppressWarnings("rawtypes")
         JSFunction other = (JSFunction) obj;
         return super.equals(other)

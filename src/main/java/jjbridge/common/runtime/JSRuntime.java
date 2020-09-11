@@ -5,7 +5,8 @@ import jjbridge.common.value.JSObject;
 import jjbridge.common.value.JSType;
 import jjbridge.common.value.JSValue;
 
-public interface JSRuntime extends AutoCloseable {
+public interface JSRuntime extends AutoCloseable
+{
     @SuppressWarnings("rawtypes")
     JSObject globalObject();
 

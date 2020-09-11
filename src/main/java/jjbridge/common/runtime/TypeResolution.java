@@ -1,5 +1,6 @@
 package jjbridge.common.runtime;
 
-public enum TypeResolution {
+public enum TypeResolution
+{
     Nominal, Actual
 }
