@@ -2,25 +2,26 @@ package jjbridge.common.value;
 
 import jjbridge.common.value.strategy.ValueGetter;
 import jjbridge.common.value.strategy.ValueSetter;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class JSPrimitiveTest {
     private static final float value = 0.786f;
 
     private JSPrimitive<Float> primitive;
-    private ValueGetter<Float> getter;
-    private ValueSetter<Float> setter;
+    @Mock private ValueGetter<Float> getter;
+    @Mock private ValueSetter<Float> setter;
 
-    @Before
-    @SuppressWarnings("unchecked")
+    @BeforeEach
     public void before() {
-        getter = (ValueGetter<Float>) mock(ValueGetter.class);
-        setter = (ValueSetter<Float>) mock(ValueSetter.class);
         primitive = new JSPrimitive<Float>(getter, setter) {
         };
     }
@@ -49,5 +50,13 @@ public class JSPrimitiveTest {
         });
         assertEquals(primitive, new JSPrimitive<Float>(getter, setter) {
         });
+    }
+
+    @Test
+    public void HashCode() {
+        assertEquals(primitive.hashCode(), primitive.hashCode());
+        assertNotEquals(primitive.hashCode(), 0);
+        assertEquals(primitive.hashCode(), new JSPrimitive<Float>(getter, setter) {
+        }.hashCode());
     }
 }

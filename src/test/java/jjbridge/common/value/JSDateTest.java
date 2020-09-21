@@ -5,15 +5,20 @@ import jjbridge.common.value.strategy.ObjectPropertyGetter;
 import jjbridge.common.value.strategy.ObjectPropertySetter;
 import jjbridge.common.value.strategy.ValueGetter;
 import jjbridge.common.value.strategy.ValueSetter;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class JSDateTest {
     private static final Date value = new Date(1645980732);
     private static final ObjectPropertyGetter<JSReference> propertyGetter = name -> null;
@@ -21,14 +26,11 @@ public class JSDateTest {
     };
 
     private JSDate<JSReference> date;
-    private ValueGetter<Date> getter;
-    private ValueSetter<Date> setter;
+    @Mock private ValueGetter<Date> getter;
+    @Mock private ValueSetter<Date> setter;
 
-    @Before
-    @SuppressWarnings("unchecked")
+    @BeforeEach
     public void before() {
-        getter = (ValueGetter<Date>) mock(ValueGetter.class);
-        setter = (ValueSetter<Date>) mock(ValueSetter.class);
         date = new JSDate<>(getter, setter, propertyGetter, propertySetter);
     }
 
@@ -53,5 +55,12 @@ public class JSDateTest {
         assertNotEquals(date, new JSDate<>(null, setter, propertyGetter, propertySetter));
         assertNotEquals(date, new JSDate<>(getter, setter, null, propertySetter));
         assertEquals(date, new JSDate<>(getter, setter, propertyGetter, propertySetter));
+    }
+
+    @Test
+    public void HashCode() {
+        assertEquals(date.hashCode(), date.hashCode());
+        assertNotEquals(date.hashCode(), 0);
+        assertEquals(date.hashCode(), new JSDate<>(getter, setter, propertyGetter, propertySetter).hashCode());
     }
 }

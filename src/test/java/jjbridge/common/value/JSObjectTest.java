@@ -2,13 +2,17 @@ package jjbridge.common.value;
 
 import jjbridge.common.runtime.JSReference;
 import jjbridge.common.value.strategy.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class JSObjectTest {
     private static final String propertyName = "name";
     private static final JSReference propertyValue = new JSReference() {
@@ -24,14 +28,11 @@ public class JSObjectTest {
     };
 
     private JSObject<JSReference> object;
-    private ObjectPropertyGetter<JSReference> getter;
-    private ObjectPropertySetter<JSReference> setter;
+    @Mock private ObjectPropertyGetter<JSReference> getter;
+    @Mock private ObjectPropertySetter<JSReference> setter;
 
-    @Before
-    @SuppressWarnings("unchecked")
+    @BeforeEach
     public void before() {
-        getter = (ObjectPropertyGetter<JSReference>) mock(ObjectPropertyGetter.class);
-        setter = (ObjectPropertySetter<JSReference>) mock(ObjectPropertySetter.class);
         object = new JSObject<>(getter, setter);
     }
 
@@ -55,5 +56,12 @@ public class JSObjectTest {
         assertNotEquals(object, new JSObject<>(getter, null));
         assertNotEquals(object, new JSObject<>(null, setter));
         assertEquals(object, new JSObject<>(getter, setter));
+    }
+
+    @Test
+    public void HashCode() {
+        assertEquals(object.hashCode(), object.hashCode());
+        assertNotEquals(object.hashCode(), 0);
+        assertEquals(object.hashCode(), new JSObject<>(getter, setter).hashCode());
     }
 }

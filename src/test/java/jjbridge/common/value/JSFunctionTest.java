@@ -2,13 +2,18 @@ package jjbridge.common.value;
 
 import jjbridge.common.runtime.JSReference;
 import jjbridge.common.value.strategy.*;
-import org.junit.Before;
-import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class JSFunctionTest {
     private static final ObjectPropertyGetter<JSReference> propertyGetter = name -> null;
     private static final ObjectPropertySetter<JSReference> propertySetter = (name, value) -> {
@@ -26,14 +31,11 @@ public class JSFunctionTest {
     };
 
     private JSFunction<JSReference> function;
-    private FunctionInvoker<JSReference> invoker;
-    private FunctionSetter<JSReference> setter;
+    @Mock private FunctionInvoker<JSReference> invoker;
+    @Mock private FunctionSetter<JSReference> setter;
 
-    @Before
-    @SuppressWarnings("unchecked")
+    @BeforeEach
     public void before() {
-        invoker = (FunctionInvoker<JSReference>) mock(FunctionInvoker.class);
-        setter = (FunctionSetter<JSReference>) mock(FunctionSetter.class);
         function = new JSFunction<>(JSReference.class, propertyGetter, propertySetter, invoker, setter);
     }
 
@@ -65,5 +67,12 @@ public class JSFunctionTest {
         assertNotEquals(function, new JSFunction<>(null, propertyGetter, propertySetter, invoker, null));
         assertNotEquals(function, new JSFunction<>(null, null, propertySetter, invoker, setter));
         assertEquals(function, new JSFunction<>(null, propertyGetter, propertySetter, invoker, setter));
+    }
+
+    @Test
+    public void HashCode() {
+        assertEquals(function.hashCode(), function.hashCode());
+        assertNotEquals(function.hashCode(), 0);
+        assertEquals(function.hashCode(), new JSFunction<>(null, propertyGetter, propertySetter, invoker, setter).hashCode());
     }
 }

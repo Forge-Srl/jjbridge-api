@@ -1,21 +1,21 @@
 package jjbridge.common.inspector;
 
 import jjbridge.common.runtime.JSRuntime;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class JSBaseInspectorTest {
-    private int port;
-    private JSRuntime runtime;
-    private JSBaseInspector<JSRuntime> inspector;
 
-    private class JSBaseInspectorForTest<R extends JSRuntime> extends JSBaseInspector<R> {
+    private static class JSBaseInspectorForTest<R extends JSRuntime> extends JSBaseInspector<R> {
         JSBaseInspectorForTest(int port) {
             super(port);
         }
@@ -26,12 +26,9 @@ public class JSBaseInspectorTest {
         }
     }
 
-    @Before
-    public final void before() {
-        port = 1000;
-        runtime = mock(JSRuntime.class);
-        inspector = spy(new JSBaseInspectorForTest<>(port));
-    }
+    private static final int port = 1000;
+    @Mock private JSRuntime runtime;
+    @Spy private JSBaseInspector<JSRuntime> inspector = new JSBaseInspectorForTest<>(port);
 
     @Test
     public final void onOpen_onMessage_onClose() {
@@ -50,9 +47,9 @@ public class JSBaseInspectorTest {
         verify(messageHandler).close();
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test()
     public final void onError() {
-        inspector.onError(null, null);
+        assertThrows(RuntimeException.class, () -> inspector.onError(null, null));
     }
 
     @Test

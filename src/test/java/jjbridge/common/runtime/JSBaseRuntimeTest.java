@@ -2,26 +2,24 @@ package jjbridge.common.runtime;
 
 import jjbridge.common.inspector.JSInspector;
 import jjbridge.common.value.JSType;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class JSBaseRuntimeTest {
     private static final String script = "some script";
     private static final String scriptName = "scriptName";
     private static final JSType jsType = JSType.Object;
-    private static final JSReference mockedReference = mock(JSReference.class);
-    private static final JSInspector mockedInspector1 = mock(JSInspector.class);
-    private static final JSInspector mockedInspector2 = mock(JSInspector.class);
-    private JSBaseRuntime<JSReference> jsRuntime;
-
-    @Before
-    @SuppressWarnings("unchecked")
-    public void SetUp() {
-        jsRuntime = (JSBaseRuntime<JSReference>) spy(JSBaseRuntime.class);
-    }
+    @Mock private static JSReference mockedReference;
+    @Mock private static JSInspector mockedInspector1;
+    @Mock private static JSInspector mockedInspector2;
+    @Spy private JSBaseRuntime<JSReference> jsRuntime;
 
     @Test
     public final void isClosed() {
@@ -51,10 +49,10 @@ public class JSBaseRuntimeTest {
         verify(jsRuntime).getGlobalObject();
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test()
     public final void globalObject_throwsException() {
         when(jsRuntime.isClosed()).thenReturn(true);
-        jsRuntime.globalObject();
+        assertThrows(RuntimeException.class, () -> jsRuntime.globalObject());
     }
 
     @Test
@@ -65,10 +63,10 @@ public class JSBaseRuntimeTest {
         assertNull(jsRuntime.executeScript(scriptName, script));
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test()
     public final void executeScript_throwsException() {
         when(jsRuntime.isClosed()).thenReturn(true);
-        jsRuntime.executeScript(scriptName, script);
+        assertThrows(RuntimeException.class, () -> jsRuntime.executeScript(scriptName, script));
     }
 
     @Test
@@ -90,10 +88,10 @@ public class JSBaseRuntimeTest {
         assertNull(jsRuntime.newReference(jsType));
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test()
     public final void newReference_throwsException() {
         when(jsRuntime.isClosed()).thenReturn(true);
-        jsRuntime.newReference(jsType);
+        assertThrows(RuntimeException.class, () -> jsRuntime.newReference(jsType));
     }
 
     @Test
@@ -118,24 +116,26 @@ public class JSBaseRuntimeTest {
         verify(jsRuntime).resolve(mockedReference, jsType);
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test()
     public final void resolveReference_fullParams_throwsException() {
         when(jsRuntime.isClosed()).thenReturn(true);
-        jsRuntime.resolveReference(mockedReference, TypeResolution.Nominal);
+        assertThrows(RuntimeException.class, () -> jsRuntime.resolveReference(mockedReference, TypeResolution.Nominal));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test()
     public final void onInspectorAttached_ThrowsException() {
         jsRuntime.onInspectorAttached(mockedInspector1);
         jsRuntime.onInspectorAttached(mockedInspector2);
-        jsRuntime.onInspectorAttached(mockedInspector1);
+        assertThrows(IllegalStateException.class, () -> jsRuntime.onInspectorAttached(mockedInspector1));
     }
 
     @Test
     public final void onInspectorAttached_Detached() {
-        jsRuntime.onInspectorAttached(mockedInspector1);
-        jsRuntime.onInspectorAttached(mockedInspector2);
-        jsRuntime.onInspectorDetached(mockedInspector1);
-        jsRuntime.onInspectorAttached(mockedInspector1);
+        assertDoesNotThrow(() -> {
+            jsRuntime.onInspectorAttached(mockedInspector1);
+            jsRuntime.onInspectorAttached(mockedInspector2);
+            jsRuntime.onInspectorDetached(mockedInspector1);
+            jsRuntime.onInspectorAttached(mockedInspector1);
+        });
     }
 }

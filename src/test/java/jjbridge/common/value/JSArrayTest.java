@@ -5,13 +5,17 @@ import jjbridge.common.value.strategy.ArrayDataGetter;
 import jjbridge.common.value.strategy.ArrayDataSetter;
 import jjbridge.common.value.strategy.ObjectPropertyGetter;
 import jjbridge.common.value.strategy.ObjectPropertySetter;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class JSArrayTest {
     private static final ObjectPropertyGetter<JSReference> propertyGetter = name -> null;
     private static final ObjectPropertySetter<JSReference> propertySetter = (name, value) -> {
@@ -29,15 +33,12 @@ public class JSArrayTest {
         }
     };
 
-    private ArrayDataGetter<JSReference> arrayDataGetter;
-    private ArrayDataSetter<JSReference> arrayDataSetter;
+    @Mock private ArrayDataGetter<JSReference> arrayDataGetter;
+    @Mock private ArrayDataSetter<JSReference> arrayDataSetter;
     private JSArray<JSReference> array;
 
-    @Before
-    @SuppressWarnings("unchecked")
+    @BeforeEach
     public void before() {
-        arrayDataGetter = (ArrayDataGetter<JSReference>) mock(ArrayDataGetter.class);
-        arrayDataSetter = (ArrayDataSetter<JSReference>) mock(ArrayDataSetter.class);
         array = new JSArray<>(propertyGetter, propertySetter, arrayDataGetter, arrayDataSetter);
     }
 
@@ -69,5 +70,12 @@ public class JSArrayTest {
         assertNotEquals(array, new JSArray<>(propertyGetter, propertySetter, null, arrayDataSetter));
         assertNotEquals(array, new JSArray<>(propertyGetter, null, arrayDataGetter, arrayDataSetter));
         assertEquals(array, new JSArray<>(propertyGetter, propertySetter, arrayDataGetter, arrayDataSetter));
+    }
+
+    @Test
+    public void HashCode() {
+        assertEquals(array.hashCode(), array.hashCode());
+        assertNotEquals(array.hashCode(), 0);
+        assertEquals(array.hashCode(), new JSArray<>(propertyGetter, propertySetter, arrayDataGetter, arrayDataSetter).hashCode());
     }
 }
