@@ -31,8 +31,7 @@ public abstract class JSPrimitive<T> implements JSValue
         {
             return false;
         }
-        @SuppressWarnings("rawtypes")
-        JSPrimitive other = (JSPrimitive) obj;
+        JSPrimitive<?> other = (JSPrimitive<?>) obj;
         return this.getter.equals(other.getter) && this.setter.equals(other.setter);
     }
 

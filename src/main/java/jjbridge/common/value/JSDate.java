@@ -38,8 +38,7 @@ public class JSDate<R extends JSReference> extends JSObject<R>
         {
             return false;
         }
-        @SuppressWarnings("rawtypes")
-        JSDate other = (JSDate) obj;
+        JSDate<?> other = (JSDate<?>) obj;
         return super.equals(other) && this.getter.equals(other.getter) && this.setter.equals(other.setter);
     }
 

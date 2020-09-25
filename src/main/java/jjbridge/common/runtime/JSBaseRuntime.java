@@ -35,8 +35,7 @@ public abstract class JSBaseRuntime<R extends JSReference> implements JSRuntime
         this.closed = true;
     }
 
-    @SuppressWarnings("rawtypes")
-    public final JSObject globalObject()
+    public final JSObject<?> globalObject()
     {
         if (this.isClosed())
         {

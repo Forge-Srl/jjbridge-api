@@ -45,7 +45,7 @@ public class JSFunction<R extends JSReference> extends JSObject<R>
     }
 
     @SuppressWarnings("unchecked")
-    public void setFunction(@SuppressWarnings("rawtypes") FunctionCallback callback)
+    public void setFunction(FunctionCallback<?> callback)
     {
         this.functionSetter.setFunction((FunctionCallback<R>) callback);
     }
@@ -57,8 +57,7 @@ public class JSFunction<R extends JSReference> extends JSObject<R>
         {
             return false;
         }
-        @SuppressWarnings("rawtypes")
-        JSFunction other = (JSFunction) obj;
+        JSFunction<?> other = (JSFunction<?>) obj;
         return super.equals(other)
                 && this.functionInvoker.equals(other.functionInvoker)
                 && this.functionSetter.equals(other.functionSetter);

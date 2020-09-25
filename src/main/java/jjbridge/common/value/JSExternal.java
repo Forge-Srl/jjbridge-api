@@ -31,8 +31,7 @@ public class JSExternal<T> implements JSValue
         {
             return false;
         }
-        @SuppressWarnings("rawtypes")
-        JSExternal other = (JSExternal) obj;
+        JSExternal<?> other = (JSExternal<?>) obj;
         return this.getter.equals(other.getter) && this.setter.equals(other.setter);
     }
 

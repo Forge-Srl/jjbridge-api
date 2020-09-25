@@ -33,8 +33,7 @@ public class JSObject<R extends JSReference> implements JSValue
         {
             return false;
         }
-        @SuppressWarnings("rawtypes")
-        JSObject other = (JSObject) obj;
+        JSObject<?> other = (JSObject<?>) obj;
         return this.propertyGetter.equals(other.propertyGetter) && this.propertySetter.equals(other.propertySetter);
     }
 

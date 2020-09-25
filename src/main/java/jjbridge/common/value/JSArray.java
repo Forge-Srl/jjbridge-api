@@ -42,8 +42,7 @@ public class JSArray<R extends JSReference> extends JSObject<R>
         {
             return false;
         }
-        @SuppressWarnings("rawtypes")
-        JSArray other = (JSArray) obj;
+        JSArray<?> other = (JSArray<?>) obj;
         return super.equals(other)
                 && this.arrayDataGetter.equals(other.arrayDataGetter)
                 && this.arrayDataSetter.equals(other.arrayDataSetter);
