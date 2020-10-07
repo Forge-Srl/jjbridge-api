@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="jjbridge-common" />
+        <module name="jjbridge-api" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="jjbridge-common" target="1.8" />
+      <module name="jjbridge-api" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
