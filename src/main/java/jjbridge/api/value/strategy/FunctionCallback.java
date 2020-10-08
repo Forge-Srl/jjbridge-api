@@ -13,5 +13,6 @@ public interface FunctionCallback<R extends JSReference>
      * @param arguments the parameters of the function
      * @return the result of the function
      * */
+    @SuppressWarnings("unchecked")
     R apply(R... arguments);
 }
