@@ -12,6 +12,12 @@
     <name>JJBridge</name>
     <description>This library provides a set of interfaces for executing and interacting with JavaScript code.</description>
 
+    <licenses>
+        <license>
+            <name>MIT</name>
+        </license>
+    </licenses>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
