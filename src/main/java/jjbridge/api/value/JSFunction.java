@@ -10,12 +10,16 @@ import jjbridge.api.value.strategy.ObjectPropertySetter;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
+/**
+ * The {@code Function} type of JavaScript.
+ * */
 public class JSFunction<R extends JSReference> extends JSObject<R>
 {
     private final Class<R> jsReferenceType;
     private final FunctionInvoker<R> functionInvoker;
     private final FunctionSetter<R> functionSetter;
 
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
     public JSFunction(Class<R> type, ObjectPropertyGetter<R> propertyGetter, ObjectPropertySetter<R> propertySetter,
                       FunctionInvoker<R> functionInvoker, FunctionSetter<R> functionSetter)
     {
@@ -25,12 +29,26 @@ public class JSFunction<R extends JSReference> extends JSObject<R>
         this.functionSetter = functionSetter;
     }
 
+    /**
+     * Calls this JavaScript function on a receiver with the given parameters.
+     *
+     * @param receiver the receiver of this function invocation. In JavaScript code the receiver is the value pointed by
+     *                 {@code this} inside the function body.
+     * @param args the arguments of this function invocation
+     * @return a reference to the value returned by this JavaScript function
+     * */
     @SuppressWarnings("unchecked")
     public JSReference invoke(JSReference receiver, JSReference... args)
     {
         return this.functionInvoker.invokeFunction((R) receiver, castArray(args));
     }
 
+    /**
+     * Calls this JavaScript function as an object constructor with the given parameters.
+     *
+     * @param args the arguments of this function invocation
+     * @return a reference to the object constructed by this JavaScript function
+     * */
     public JSReference invokeConstructor(JSReference... args)
     {
         return this.functionInvoker.invokeConstructor(castArray(args));
@@ -44,6 +62,11 @@ public class JSFunction<R extends JSReference> extends JSObject<R>
         return casted;
     }
 
+    /**
+     * Changes the actual code to be executed when invoking this JavaScript function.
+     *
+     * @param callback the new code of this JavaScript function
+     * */
     @SuppressWarnings("unchecked")
     public void setFunction(FunctionCallback<?> callback)
     {

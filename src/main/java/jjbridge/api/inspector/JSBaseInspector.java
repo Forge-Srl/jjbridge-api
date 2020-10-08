@@ -11,8 +11,19 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * To connect Chrome DevTools, open Chrome to
- * chrome-devtools://devtools/bundled/inspector.html?v8only=true&ws=IP:PORT
+ * The base implementation of a JavaScript runtime inspector.
+ * <p>This class already implements the communication layer with the inspector client via Web Socket. Subclasses should
+ * only define how incoming messages are delivered to the inspector server controlling the runtime.</p>
+ * <p>Communication must conform to the protocol defined at
+ * <a href="https://chromedevtools.github.io/devtools-protocol/">Chrome DevTools specification</a></p>
+ * <br>
+ * <p>To use the inspector, open Chromium at
+ * <a href="chrome-devtools://devtools/bundled/inspector.html?v8only=true&ws=IP:PORT">
+ * chrome-devtools://devtools/bundled/inspector.html?v8only=true&amp;ws=IP:PORT</a> where:</p>
+ * <ul>
+ *     <li>{@code IP} is the IP address of the machine running the JavaScript engine</li>
+ *     <li>{@code PORT} is the port passed in {@link #JSBaseInspector(int)}</li>
+ * </ul>
  */
 public abstract class JSBaseInspector<R extends JSRuntime> extends WebSocketServer implements JSInspector
 {

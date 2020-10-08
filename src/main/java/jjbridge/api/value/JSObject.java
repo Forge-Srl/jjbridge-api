@@ -4,6 +4,9 @@ import jjbridge.api.runtime.JSReference;
 import jjbridge.api.value.strategy.ObjectPropertyGetter;
 import jjbridge.api.value.strategy.ObjectPropertySetter;
 
+/**
+ * This class is the root of all JavaScript Object types.
+ * */
 public class JSObject<R extends JSReference> implements JSValue
 {
     private final ObjectPropertyGetter<R> propertyGetter;
@@ -15,11 +18,23 @@ public class JSObject<R extends JSReference> implements JSValue
         this.propertySetter = propertySetter;
     }
 
+    /**
+     * Provides a reference to a property of this JavaScript object.
+     *
+     * @param name the name of the property to access
+     * @return the reference to the property
+     * */
     public JSReference get(String name)
     {
         return this.propertyGetter.getPropertyByName(name);
     }
 
+    /**
+     * Assign the given reference to a property of this JavaScript object.
+     *
+     * @param name the name of the property to access
+     * @param reference the new reference pointed by the property
+     * */
     @SuppressWarnings("unchecked")
     public void set(String name, JSReference reference)
     {

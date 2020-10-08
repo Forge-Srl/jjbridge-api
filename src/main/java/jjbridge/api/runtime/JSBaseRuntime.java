@@ -8,6 +8,12 @@ import jjbridge.api.value.JSValue;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * The base implementation of a JavaScript runtime.
+ * <p>This class already handles inspector attach/detach callbacks and performs checks to prevent invalid calls on the
+ * runtime after closing it. Subclasses should only define how to actually create and resolve references, execute
+ * scripts and access the global object.</p>
+ */
 public abstract class JSBaseRuntime<R extends JSReference> implements JSRuntime
 {
     private boolean closed;
@@ -26,6 +32,7 @@ public abstract class JSBaseRuntime<R extends JSReference> implements JSRuntime
         return this.closed;
     }
 
+    @Override
     public void close()
     {
         for (JSInspector attachedInspector : attachedInspectors)
@@ -35,6 +42,7 @@ public abstract class JSBaseRuntime<R extends JSReference> implements JSRuntime
         this.closed = true;
     }
 
+    @Override
     public final JSObject<?> globalObject()
     {
         if (this.isClosed())
@@ -44,6 +52,7 @@ public abstract class JSBaseRuntime<R extends JSReference> implements JSRuntime
         return this.getGlobalObject();
     }
 
+    @Override
     public final JSReference executeScript(String fileName, String script)
     {
         if (this.isClosed())
@@ -53,11 +62,13 @@ public abstract class JSBaseRuntime<R extends JSReference> implements JSRuntime
         return this.runScript(fileName, script);
     }
 
+    @Override
     public final JSReference executeScript(String script)
     {
         return executeScript("/script_" + (scriptCounter++), script);
     }
 
+    @Override
     public final JSReference newReference(JSType type)
     {
         if (this.isClosed())
@@ -67,11 +78,13 @@ public abstract class JSBaseRuntime<R extends JSReference> implements JSRuntime
         return this.createNewReference(type);
     }
 
+    @Override
     public final <T extends JSValue> T resolveReference(JSReference reference)
     {
         return this.resolveReference(reference, TypeResolution.Nominal);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public final <T extends JSValue> T resolveReference(JSReference reference, TypeResolution typeResolution)
     {
@@ -91,6 +104,7 @@ public abstract class JSBaseRuntime<R extends JSReference> implements JSRuntime
         }
     }
 
+    @Override
     public void onInspectorAttached(JSInspector inspector)
     {
         if (!attachedInspectors.add(inspector))
@@ -99,6 +113,7 @@ public abstract class JSBaseRuntime<R extends JSReference> implements JSRuntime
         }
     }
 
+    @Override
     public void onInspectorDetached(JSInspector inspector)
     {
         attachedInspectors.remove(inspector);

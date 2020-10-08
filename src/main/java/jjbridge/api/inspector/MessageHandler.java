@@ -1,5 +1,8 @@
 package jjbridge.api.inspector;
 
+/**
+ * This class allows to send messages to both the inspector client and the inspector server attached to a runtime.
+ * */
 public abstract class MessageHandler
 {
     private final Connection connection;

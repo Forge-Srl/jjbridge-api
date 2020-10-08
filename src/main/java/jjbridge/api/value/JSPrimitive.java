@@ -3,6 +3,11 @@ package jjbridge.api.value;
 import jjbridge.api.value.strategy.ValueGetter;
 import jjbridge.api.value.strategy.ValueSetter;
 
+/**
+ * This class is the root of all JavaScript primitive types.
+ *
+ * @param <T> the Java type corresponding to the JavaScript type
+ * */
 public abstract class JSPrimitive<T> implements JSValue
 {
     private final ValueGetter<T> getter;
@@ -14,11 +19,21 @@ public abstract class JSPrimitive<T> implements JSValue
         this.setter = setter;
     }
 
+    /**
+     * Extract the Java value from the JavaScript one.
+     *
+     * @return the Java value corresponding to this JavaScript value
+     * */
     public T getValue()
     {
         return getter.getValue();
     }
 
+    /**
+     * Update the JavaScript value with the Java one.
+     *
+     * @param value the Java value with which to update this JavaScript value
+     * */
     public void setValue(T value)
     {
         setter.setValue(value);
