@@ -4,7 +4,7 @@
 
     <groupId>jjbridge</groupId>
     <artifactId>jjbridge-api</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>JJBridge</name>
@@ -25,9 +25,10 @@
     </distributionManagement>
 
     <scm>
+        <connection>scm:git:git@github.com:forge-srl/jjbridge-api.git</connection>
         <developerConnection>scm:git:git@github.com:forge-srl/jjbridge-api.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
