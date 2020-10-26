@@ -23,9 +23,4 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          echo "<settings><servers><server><id>github</id><username>x-access-token</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
-          tagname=${{ github.ref }}
-          echo "scm.tag=${tagname:10}" > release.properties
-          echo "scm.url=scm\:git\:git@github.com\:forge-srl/jjbridge-api.git" >> release.properties
-          mvn -B release:perform --file pom.xml
+        run: mvn -B deploy --file pom.xml
