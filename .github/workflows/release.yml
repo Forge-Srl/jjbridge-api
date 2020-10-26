@@ -28,4 +28,4 @@ jobs:
           tagname=${{ github.ref }}
           echo "scm.tag=${tagname:10}" > release.properties
           echo "scm.url=scm\:git\:git@github.com\:forge-srl/jjbridge-api.git" >> release.properties
-          mvn -B release:perform --file pom.xml -D
+          mvn -B release:perform --file pom.xml
