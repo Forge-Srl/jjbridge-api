@@ -27,7 +27,7 @@
     </distributionManagement>
 
     <scm>
-        <developerConnection>scm:git:https://github.com/forge-srl/jjbridge-api.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:forge-srl/jjbridge-api.git</developerConnection>
     </scm>
 
     <properties>
