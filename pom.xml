@@ -4,7 +4,7 @@
 
     <groupId>jjbridge</groupId>
     <artifactId>jjbridge-api</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>jar</packaging>
 
     <name>JJBridge</name>
@@ -27,7 +27,7 @@
     <scm>
         <connection>scm:git:git@github.com:forge-srl/jjbridge-api.git</connection>
         <developerConnection>scm:git:git@github.com:forge-srl/jjbridge-api.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>release/0.1.0</tag>
     </scm>
 
     <properties>
