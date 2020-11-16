@@ -10,6 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Configure GPG Key
+        run: |
+          mkdir -p ~/.gnupg/
+          printf "$GPG_SIGNING_KEY" | base64 --decode > ~/.gnupg/private.key
+          gpg --import ~/.gnupg/private.key --passphrase $GPG_PASSPHRASE
+        env:
+          GPG_SIGNING_KEY: ${{ secrets.GPG_KEY_FORGE_SRL_OPENSOURCE }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE_FORGE_SRL_OPENSOURCE }}
       - name: Set up Java 1.8 for publishing to GitHub Packages
         uses: actions/setup-java@v1
         with:
@@ -25,14 +33,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: mvn -B deploy --file pom.xml -Drelease-repo=github
 
-      - name: Configure GPG Key
-        run: |
-          mkdir -p ~/.gnupg/
-          printf "$GPG_SIGNING_KEY" | base64 --decode > ~/.gnupg/private.key
-          gpg --import ~/.gnupg/private.key --passphrase $GPG_PASSPHRASE
-        env:
-          GPG_SIGNING_KEY: ${{ secrets.GPG_KEY_FORGE_SRL_OPENSOURCE }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE_FORGE_SRL_OPENSOURCE }}
       - name: Set up Java 1.8 for publishing to Maven Central
         uses: actions/setup-java@v1
         with:
