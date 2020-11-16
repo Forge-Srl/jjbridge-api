@@ -15,7 +15,7 @@ jobs:
           export GPG_TTY=$(tty)
           mkdir -p ~/.gnupg/
           printf "$GPG_SIGNING_KEY" | base64 --decode > ~/.gnupg/private.key
-          gpg --import ~/.gnupg/private.key --passphrase $GPG_PASSPHRASE
+          gpg --batch --import ~/.gnupg/private.key --passphrase $GPG_PASSPHRASE
         env:
           GPG_SIGNING_KEY: ${{ secrets.GPG_KEY_FORGE_SRL_OPENSOURCE }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE_FORGE_SRL_OPENSOURCE }}
