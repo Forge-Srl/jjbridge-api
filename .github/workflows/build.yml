@@ -2,6 +2,8 @@ name: Build JJBridge Api
 
 on:
   push:
+    paths-ignore:
+      - '**.md'
     branches:
       - 'main'
     tags-ignore:
