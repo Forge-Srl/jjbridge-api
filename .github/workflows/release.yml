@@ -29,11 +29,6 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Release on Github
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE_FORGE_SRL_OPENSOURCE }}
-        run: mvn -B deploy --file pom.xml -Drelease-repo=github
 
       - name: Set up Java 1.8 for publishing to Maven Central
         uses: actions/setup-java@v1
@@ -49,3 +44,14 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE_FORGE_SRL_OPENSOURCE }}
         run: mvn -B deploy --file pom.xml -Drelease-repo=maven-central
+
+      - name: Set up Java 1.8 for publishing to GitHub Package Registry
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      - name: Release on GitHub Package Registry
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE_FORGE_SRL_OPENSOURCE }}
+        run: mvn -B deploy --file pom.xml -Drelease-repo=github
