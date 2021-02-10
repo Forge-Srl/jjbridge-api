@@ -19,10 +19,8 @@ public interface JSInspector
      * Use this method to attach the inspector to a runtime.
      *
      * @param runtime the runtime to which the inspector will attach
-     * @return a {@link PendingConnection} which allows to wait for an inspector client to connect before continuing the
-     *     execution.
      * */
-    PendingConnection attach(JSRuntime runtime);
+    void attach(JSRuntime runtime);
 
     /**
      * Use this method to detach from the runtime a currently attached inspector instance.

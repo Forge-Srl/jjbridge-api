@@ -276,14 +276,14 @@ To enable debugging via the inspector you have to follow these steps:
    // ...
    JSInspector inspector = engine.newInspector(9090); // use a free port on your machine
    try (JSRuntime runtime = engine.newRuntime()) {
-       inspector.attach(runtime).waitForConnection(30 * 1000); // waits 30 seconds for a client to connect before continuing the execution
+       inspector.attach(runtime);
        
        // Do JavaScript things here...
    }
    // ...
    ```
 2. Run the app.
-3. **Before the specified timer expires**, connect to the inspector at `chrome-devtools://devtools/bundled/inspector.html?v8only=true&ws=IP:PORT` where
+3. Connect to the inspector at `chrome-devtools://devtools/bundled/inspector.html?v8only=true&ws=IP:PORT` where:
    - `IP` is the IP address of the machine running the code;
    - `PORT` is the port passed to the inspector (*9090* in the example up here).
 4. Debug :tada:

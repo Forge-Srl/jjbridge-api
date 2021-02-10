@@ -5,10 +5,9 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * The base implementation of a JavaScript runtime inspector.
@@ -27,44 +26,59 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class JSBaseInspector<R extends JSRuntime> extends WebSocketServer implements JSInspector
 {
+    private final Object lock = new Object();
+    private CountDownLatch startLatch;
     private R runtime;
     private MessageHandler handler;
-    private final AtomicBoolean clientConnected;
 
     protected JSBaseInspector(int port)
     {
         super(new InetSocketAddress(port));
-        this.clientConnected = new AtomicBoolean(false);
+        setReuseAddr(true);
     }
 
     @Override
     public void onStart()
     {
+        startLatch.countDown();
     }
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake)
     {
-        handler = newMessageHandler(new Connection(conn), getRuntime());
-        clientConnected.lazySet(true);
+        synchronized (lock)
+        {
+            if (handler != null)
+            {
+                handler.close();
+                handler = null;
+            }
+            handler = newMessageHandler(new Connection(conn), getRuntime());
+        }
     }
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote)
     {
-        if (handler != null)
+        synchronized (lock)
         {
-            handler.close();
-            handler = null;
+            if (handler != null)
+            {
+                handler.close();
+                handler = null;
+            }
         }
     }
 
     @Override
     public void onMessage(WebSocket conn, String message)
     {
-        if (handler != null)
+        synchronized (lock)
         {
-            handler.sendToRuntime(message);
+            if (handler != null)
+            {
+                handler.sendToRuntime(message);
+            }
         }
     }
 
@@ -85,32 +99,30 @@ public abstract class JSBaseInspector<R extends JSRuntime> extends WebSocketServ
         this.runtime.onInspectorAttached(this);
     }
 
+    void startBlocking()
+    {
+        startLatch = new CountDownLatch(1);
+        start();
+        try
+        {
+            startLatch.await();
+        }
+        catch (InterruptedException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     @SuppressWarnings("unchecked")
-    public PendingConnection attach(JSRuntime runtime)
+    public void attach(JSRuntime runtime)
     {
         if (getRuntime() != null)
         {
             detach();
         }
         setRuntime((R) runtime);
-        start();
-
-        return maxWaitMillis ->
-        {
-            long t = System.currentTimeMillis() + maxWaitMillis;
-            while (!clientConnected.get() && System.currentTimeMillis() < t)
-            {
-                try
-                {
-                    Thread.sleep(maxWaitMillis / 10);
-                }
-                catch (InterruptedException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        };
+        startBlocking();
     }
 
     @Override
@@ -118,9 +130,17 @@ public abstract class JSBaseInspector<R extends JSRuntime> extends WebSocketServ
     {
         try
         {
-            stop();
+            synchronized (lock)
+            {
+                if (handler != null)
+                {
+                    handler.close();
+                    handler = null;
+                }
+                stop(3000);
+            }
         }
-        catch (IOException | InterruptedException e)
+        catch (InterruptedException e)
         {
             e.printStackTrace();
         }
