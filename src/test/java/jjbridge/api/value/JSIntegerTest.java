@@ -8,8 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -37,6 +36,27 @@ public class JSIntegerTest
     public void setValue() {
         primitive.setValue(value);
         verify(setter).setValue(value);
+    }
+
+    @Test
+    public void MAX_SAFE_INTEGER() {
+        assertEquals(JSInteger.MAX_SAFE_INTEGER, 9007199254740991L);
+    }
+
+    @Test
+    public void MIN_SAFE_INTEGER() {
+        assertEquals(JSInteger.MIN_SAFE_INTEGER, -9007199254740991L);
+    }
+
+    @Test
+    public void isSafeJSInteger() {
+        assertTrue(JSInteger.isSafeJSInteger(JSInteger.MAX_SAFE_INTEGER));
+        assertTrue(JSInteger.isSafeJSInteger(JSInteger.MIN_SAFE_INTEGER));
+        assertTrue(JSInteger.isSafeJSInteger(0));
+        assertFalse(JSInteger.isSafeJSInteger(JSInteger.MAX_SAFE_INTEGER + 1));
+        assertFalse(JSInteger.isSafeJSInteger(JSInteger.MIN_SAFE_INTEGER - 1));
+        assertFalse(JSInteger.isSafeJSInteger(Long.MAX_VALUE));
+        assertFalse(JSInteger.isSafeJSInteger(Long.MIN_VALUE));
     }
 
     @Test
