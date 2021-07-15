@@ -4,11 +4,11 @@ import jjbridge.api.value.strategy.ValueGetter;
 import jjbridge.api.value.strategy.ValueSetter;
 
 /**
- * The {@code Integer} type of JavaScript.
+ * The {@code Integer} number type of JavaScript.
  * */
-public class JSInteger extends JSPrimitive<Integer>
+public class JSInteger extends JSPrimitive<Long>
 {
-    public JSInteger(ValueGetter<Integer> getter, ValueSetter<Integer> setter)
+    public JSInteger(ValueGetter<Long> getter, ValueSetter<Long> setter)
     {
         super(getter, setter);
     }

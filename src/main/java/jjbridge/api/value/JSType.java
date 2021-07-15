@@ -12,5 +12,5 @@ import jjbridge.api.runtime.TypeResolution;
  * */
 public enum JSType
 {
-    Undefined, Null, Boolean, Integer, Double, String, External, Object, Date, Array, Function
+    Undefined, Null, Boolean, Integer, Float, String, External, Object, Date, Array, Function
 }

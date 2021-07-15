@@ -4,8 +4,8 @@ import jjbridge.api.inspector.JSInspector;
 import jjbridge.api.value.JSArray;
 import jjbridge.api.value.JSBoolean;
 import jjbridge.api.value.JSDate;
-import jjbridge.api.value.JSDouble;
 import jjbridge.api.value.JSExternal;
+import jjbridge.api.value.JSFloat;
 import jjbridge.api.value.JSFunction;
 import jjbridge.api.value.JSInteger;
 import jjbridge.api.value.JSNull;
@@ -152,7 +152,7 @@ public interface JSRuntime extends AutoCloseable
      *     <tr><td>{@link JSType#Null}</td><td>{@link JSNull}</td></tr>
      *     <tr><td>{@link JSType#Boolean}</td><td>{@link JSBoolean}</td></tr>
      *     <tr><td>{@link JSType#Integer}</td><td>{@link JSInteger}</td></tr>
-     *     <tr><td>{@link JSType#Double}</td><td>{@link JSDouble}</td></tr>
+     *     <tr><td>{@link JSType#Float}</td><td>{@link JSFloat}</td></tr>
      *     <tr><td>{@link JSType#String}</td><td>{@link JSString}</td></tr>
      *     <tr><td>{@link JSType#Date}</td><td>{@link JSDate}</td></tr>
      *     <tr><td>{@link JSType#Object}</td><td>{@link JSObject}</td></tr>

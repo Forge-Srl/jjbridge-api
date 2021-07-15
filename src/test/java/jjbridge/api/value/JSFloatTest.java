@@ -14,17 +14,17 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class JSDoubleTest
+public class JSFloatTest
 {
     private static final double value = 69.420;
 
-    private JSDouble primitive;
+    private JSFloat primitive;
     @Mock private ValueGetter<Double> getter;
     @Mock private ValueSetter<Double> setter;
 
     @BeforeEach
     public void before() {
-        primitive = new JSDouble(getter, setter);
+        primitive = new JSFloat(getter, setter);
     }
 
     @Test
@@ -43,9 +43,9 @@ public class JSDoubleTest
     public void Equals() {
         assertEquals(primitive, primitive);
         assertNotEquals(primitive, null);
-        assertNotEquals(primitive, new JSDouble(null, null));
-        assertNotEquals(primitive, new JSDouble(getter, null));
-        assertNotEquals(primitive, new JSDouble(null, setter));
-        assertEquals(primitive, new JSDouble(getter, setter));
+        assertNotEquals(primitive, new JSFloat(null, null));
+        assertNotEquals(primitive, new JSFloat(getter, null));
+        assertNotEquals(primitive, new JSFloat(null, setter));
+        assertEquals(primitive, new JSFloat(getter, setter));
     }
 }

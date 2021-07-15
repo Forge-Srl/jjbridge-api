@@ -31,7 +31,6 @@ Add this to your pom.xml:
 <dependency>
   <groupId>srl.forge</groupId>
   <artifactId>jjbridge-api</artifactId>
-  <version>0.1.1</version>
 </dependency>
 ```
 
@@ -84,8 +83,8 @@ expected `JSValue` sub-type. `JSValue` sub-types are the following:
 - `JSUndefined`: maps JavaScript `undefined`.
 - `JSNull`: maps JavaScript `null`.
 - `JSBoolean`: maps a JavaScript boolean; allows get/set of the value.
-- `JSInteger`: maps a JavaScript integer; allows get/set of the value.
-- `JSDouble`: maps a JavaScript number; allows get/set of the value.
+- `JSInteger`: maps a JavaScript integer to a Java long; allows get/set of the value.
+- `JSFloat`: maps a JavaScript number to a Java double; allows get/set of the value.
 - `JSString`: maps a JavaScript string; allows get/set of the value.
 - `JSObject`: maps a JavaScript object; allows get/set of properties/methods.
 - `JSDate`: maps a JavaScript date; allows get/set of the value and properties/methods.

@@ -4,11 +4,11 @@ import jjbridge.api.value.strategy.ValueGetter;
 import jjbridge.api.value.strategy.ValueSetter;
 
 /**
- * The {@code Number} type of JavaScript.
+ * The {@code Float} number type of JavaScript.
  * */
-public class JSDouble extends JSPrimitive<Double>
+public class JSFloat extends JSPrimitive<Double>
 {
-    public JSDouble(ValueGetter<Double> getter, ValueSetter<Double> setter)
+    public JSFloat(ValueGetter<Double> getter, ValueSetter<Double> setter)
     {
         super(getter, setter);
     }

@@ -16,11 +16,11 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class JSIntegerTest
 {
-    private static final int value = 69420;
+    private static final long value = 69420;
 
     private JSInteger primitive;
-    @Mock private ValueGetter<Integer> getter;
-    @Mock private ValueSetter<Integer> setter;
+    @Mock private ValueGetter<Long> getter;
+    @Mock private ValueSetter<Long> setter;
 
     @BeforeEach
     public void before() {
