@@ -4,7 +4,7 @@ import jjbridge.api.value.strategy.ValueGetter;
 import jjbridge.api.value.strategy.ValueSetter;
 
 /**
- * The {@code Integer} number type of JavaScript.
+ * The integer number type of JavaScript.
  * */
 public class JSInteger extends JSPrimitive<Long>
 {

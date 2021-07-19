@@ -4,7 +4,7 @@ import jjbridge.api.value.strategy.ValueGetter;
 import jjbridge.api.value.strategy.ValueSetter;
 
 /**
- * The {@code Float} number type of JavaScript.
+ * The floating point number type of JavaScript.
  * */
 public class JSFloat extends JSPrimitive<Double>
 {
