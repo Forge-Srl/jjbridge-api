@@ -4,9 +4,9 @@ import jjbridge.api.value.strategy.ValueGetter;
 import jjbridge.api.value.strategy.ValueSetter;
 
 /**
- * The integer number type of JavaScript.
+ * The number type of JavaScript.
  * */
-public class JSInteger extends JSPrimitive<Long>
+public class JSNumber extends JSPrimitive<Double>
 {
     /**
      * Represents the maximum safe integer in JavaScript (2^53 - 1).
@@ -22,9 +22,18 @@ public class JSInteger extends JSPrimitive<Long>
         return value <= MAX_SAFE_INTEGER && value >= MIN_SAFE_INTEGER;
     }
 
-    public JSInteger(ValueGetter<Long> getter, ValueSetter<Long> setter)
+    public JSNumber(ValueGetter<Double> getter, ValueSetter<Double> setter)
     {
         super(getter, setter);
     }
-}
 
+    public Long getLongValue()
+    {
+        return getValue().longValue();
+    }
+
+    public void setLongValue(Long value)
+    {
+        setValue(value.doubleValue());
+    }
+}
