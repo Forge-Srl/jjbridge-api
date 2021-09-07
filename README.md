@@ -83,8 +83,8 @@ expected `JSValue` sub-type. `JSValue` sub-types are the following:
 - `JSUndefined`: maps JavaScript `undefined`.
 - `JSNull`: maps JavaScript `null`.
 - `JSBoolean`: maps a JavaScript boolean; allows get/set of the value.
-- `JSInteger`: maps a JavaScript integer to a Java long; allows get/set of the value.
-- `JSFloat`: maps a JavaScript number to a Java double; allows get/set of the value.
+- `JSNumber`: maps a JavaScript number to a Java double; allows get/set of the value and provides additional utilities 
+  for long values.
 - `JSString`: maps a JavaScript string; allows get/set of the value.
 - `JSObject`: maps a JavaScript object; allows get/set of properties/methods.
 - `JSDate`: maps a JavaScript date; allows get/set of the value and properties/methods.
@@ -114,13 +114,13 @@ jsBool.setValue(false);
 b = jsBool.getValue(); // b is false
 ```
 
-And now an example with integers:
+And now an example with numbers:
 ```java
-JSReference ref = runtime.newReference(JSType.Integer);
-JSInteger jsInt = runtime.resolveReference(ref);
+JSReference ref = runtime.newReference(JSType.Number);
+JSNumber jsNum = runtime.resolveReference(ref);
 
-jsInt.setValue(420);
-Integer i = jsInt.getValue(); // i is 420
+jsNum.setValue(420.5);
+Double i = jsInt.getValue(); // i is 420.5
 
 jsInt.setValue(-10000009);
 i = jsInt.getValue(); // i is -10000009
@@ -148,8 +148,8 @@ jsObj.set("field3", runtime.executeScript("({inner: 8})"));
 
 JSReference field3ref = jsObj.get("field3");
 JSObject<?> field3 = runtime.resolveReference(field3ref);
-JSInteger inner = runtime.resolveReference(field3.get("inner"));
-Integer i = inner.getValue() // i is 8
+JSNumber inner = runtime.resolveReference(field3.get("inner"));
+Long i = inner.getLongValue() // i is 8
 ```
 
 #### Arrays
@@ -167,8 +167,8 @@ jsArray.set(1, runtime.newReference(JSType.Null));
 jsArray.set(2, runtime.executeScript("11**4"));
 size = jsArray.size(); // size is 3
 
-JSInteger inner = runtime.resolveReference(jsArray.get(2));
-Integer i = inner.getValue() // i is 14641
+JSNumber inner = runtime.resolveReference(jsArray.get(2));
+Long i = inner.getLongValue() // i is 14641
 ```
 
 #### Functions
@@ -185,10 +185,10 @@ JSReference stringRef = runtime.newReference(JSType.String);
 JSReference resultRef = jsFunction.invoke(ref, stringRef, stringRef);
 String resultString = ((JSString) runtime.resolveReference(resultRef)).getValue(); // resultString is TocToc
 
-JSReference intRef = runtime.newReference(JSType.Integer);
-((JSInteger) runtime.resolveReference(intRef)).setValue(12);
+JSReference intRef = runtime.newReference(JSType.Number);
+((JSNumber) runtime.resolveReference(intRef)).setLongValue(12L);
 resultRef = jsFunction.invoke(ref, intRef, intRef);
-Integer resultInt = ((JSInteger) runtime.resolveReference(resultRef)).getValue(); // resultInt is 24
+Long resultInt = ((JSNumber) runtime.resolveReference(resultRef)).getLongValue(); // resultInt is 24
 ```
 
 You can also create a JavaScript function which will execute Java code when invoked:
@@ -254,12 +254,12 @@ before running a script which use them!
 
 Here is an example:
 ```java
-JSReference globRef = runtime.newReference(JSType.Integer);
-((JSInteger) runtime.resolveReference(globRef)).setValue(21);
+JSReference globRef = runtime.newReference(JSType.Number);
+((JSNumber) runtime.resolveReference(globRef)).setLongValue(21);
 runtime.globalObject().set("myGlobVar", globRef);
 
 JSReference resultRef = runtime.executeScript("27 + (myGlobVar * 2)");
-Integer result = ((JSInteger) runtime.resolveReference(resultRef)).getValue(); // result is 69
+Long result = ((JSNumber) runtime.resolveReference(resultRef)).getLongValue(); // result is 69
 ```
 
 It is also possible to use different runtime instances at once. **Runtime instances are completely isolated** which 
